@@ -27,31 +27,18 @@ export default class CustomRenderer extends BaseRenderer {
   }
 
   canRender(element) {
-
     // only render tasks and events (ignore labels)
-    return isAny(element, [ 'bpmn:Subprocess', 'bpmn:Event' ]) && !element.labelTarget;
+    return is(element, 'bpmn:Subprocess');
   }
 
   drawShape(parentNode, element) {
     const shape = this.bpmnRenderer.drawShape(parentNode, element);
 
-    if (is(element, 'bpmn:Subprocess')) {
-      const rect = drawRect(parentNode, 100, 80, TASK_BORDER_RADIUS, '#52B415');
-
-      prependTo(rect, parentNode);
-
-      svgRemove(shape);
-
-      return shape;
-    }
-
-    const rect = drawRect(parentNode, 30, 20, TASK_BORDER_RADIUS, '#cc0000');
-
-    svgAttr(rect, {
-      transform: 'translate(-20, -10)'
+    modeling.setColor(shape, {
+      fill: 'red',
+      stroke: 'blue'
     });
-
-    return shape;
+    
   }
 
   getShapePath(shape) {
